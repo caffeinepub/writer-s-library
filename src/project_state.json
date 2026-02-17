@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-rename-all-visible-site-branding-text-from-writer-s-library-to-meri-kitaab-across-the-public-site-layout-including-the-header-brand-title-footer-copyright-line-and-the-logo-image-alt-text",
+      "title": "Rename all visible site branding text from \"Writer's Library\" to \"Meri KITAAB\" across the public site layout, including the header brand title, footer copyright line, and the logo image alt text.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-html-and-per-page-browser-tab-titles-to-use-meri-kitaab-instead-of-writer-s-library-including-the-base-html-title-and-react-page-level-document-title-updates-on-home-category-and-writing-pages",
+      "title": "Update HTML and per-page browser tab titles to use \"Meri KITAAB\" instead of \"Writer's Library\" (including the base HTML <title> and React page-level document.title updates on Home, Category, and Writing pages).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Rename app/project from \"writer's library\" to \"Meri KITAAB\"",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Meri KITAAB",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

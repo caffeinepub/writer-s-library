@@ -1,0 +1,46 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-rename-all-visible-site-branding-text-from-writer-s-library-to-meri-kitaab-across-the-public-site-layout-including-the-header-brand-title-footer-copyright-line-and-the-logo-image-alt-text",
+      "featureTitle": "Rename all visible site branding text from \"Writer's Library\" to \"Meri KITAAB\" across the public site layout, including the header brand title, footer copyright line, and the logo image alt text.",
+      "files": [
+        "frontend/src/components/layout/SiteLayout.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-html-and-per-page-browser-tab-titles-to-use-meri-kitaab-instead-of-writer-s-library-including-the-base-html-title-and-react-page-level-document-title-updates-on-home-category-and-writing-pages",
+      "featureTitle": "Update HTML and per-page browser tab titles to use \"Meri KITAAB\" instead of \"Writer's Library\" (including the base HTML <title> and React page-level document.title updates on Home, Category, and Writing pages).",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/pages/CategoryPage.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/pages/WritingDetailPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "kind": "build_request",
+  "title": "Rename site from Writer's Library to Meri KITAAB",
+  "projectName": "Meri KITAAB",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Rename all visible site branding text from \"Writer's Library\" to \"Meri KITAAB\" across the public site layout, including the header brand title, footer copyright line, and the logo image alt text.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "change the name from ' writer's library' to ' Meri KITAAB '"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Header brand title displays \"Meri KITAAB\" instead of \"Writer's Library\".",
+        "Footer copyright text displays \"Meri KITAAB\" instead of \"Writer's Library\".",
+        "The header logo image alt text is updated to \"Meri KITAAB\"."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Update HTML and per-page browser tab titles to use \"Meri KITAAB\" instead of \"Writer's Library\" (including the base HTML <title> and React page-level document.title updates on Home, Category, and Writing pages).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "change the name from ' writer's library' to ' Meri KITAAB '"
+        ]
+      },
+      "acceptanceCriteria": [
+        "frontend/index.html <title> is \"Meri KITAAB\".",
+        "Home page sets document.title to \"Meri KITAAB - Home\" (replacing \"Writer's Library - Home\").",
+        "Category page sets document.title to \"<Category Title> - Meri KITAAB\" (replacing \"<Category Title> - Writer's Library\").",
+        "Writing detail page sets document.title to \"<Writing Title> - Meri KITAAB\" (replacing \"<Writing Title> - Writer's Library\")."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify any files under frontend/src/components/ui or any paths listed as immutable in SYSTEM_CONTEXT."
+  ],
+  "nonGoals": [
+    "Do not change backend canister logic or stored data.",
+    "Do not regenerate or replace any image assets (logo/background) beyond updating text/alt/title strings."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

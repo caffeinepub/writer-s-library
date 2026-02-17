@@ -1,0 +1,55 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Rename public branding to Meri KITAAB",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Replace all visible public-site branding text and logo alt text from \"Writer's Library\" to \"Meri KITAAB\" in the shared layout.",
+      "acceptanceCriteria": [
+        "Header brand title displays \"Meri KITAAB\" instead of \"Writer's Library\".",
+        "Footer copyright text displays \"Meri KITAAB\" instead of \"Writer's Library\".",
+        "The header logo image alt text is updated to \"Meri KITAAB\"."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/layout/SiteLayout.tsx",
+          "operation": "modify",
+          "description": "Update header brand title text, footer copyright line, and the header logo <img> alt text to use \"Meri KITAAB\" instead of \"Writer's Library\" (no image asset changes)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Update base HTML and React page-level browser tab titles to use \"Meri KITAAB\" instead of \"Writer's Library\" on Home, Category, and Writing pages.",
+      "acceptanceCriteria": [
+        "frontend/index.html <title> is \"Meri KITAAB\".",
+        "Home page sets document.title to \"Meri KITAAB - Home\" (replacing \"Writer's Library - Home\").",
+        "Category page sets document.title to \"<Category Title> - Meri KITAAB\" (replacing \"<Category Title> - Writer's Library\").",
+        "Writing detail page sets document.title to \"<Writing Title> - Meri KITAAB\" (replacing \"<Writing Title> - Writer's Library\")."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Change the base HTML <title> from \"Writer's Library\" to \"Meri KITAAB\"."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Update the Home page useEffect document.title assignment to \"Meri KITAAB - Home\"."
+        },
+        {
+          "path": "frontend/src/pages/CategoryPage.tsx",
+          "operation": "modify",
+          "description": "Update the Category page useEffect document.title template to \"${category.title} - Meri KITAAB\"."
+        },
+        {
+          "path": "frontend/src/pages/WritingDetailPage.tsx",
+          "operation": "modify",
+          "description": "Update the Writing detail page useEffect document.title template to \"${writing.title} - Meri KITAAB\"."
+        }
+      ]
+    }
+  ]
+}
