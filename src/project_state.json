@@ -1,24 +1,65 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "New project",
+  "summary": "Website to publish and manage the user's writings (e.g., shayari, novels) for readers, organized into categorized sections, with the user able to add/update content.",
   "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Minimalist calligraphic logo mark (site-logo.dim_512x512.png)\n- Subtle textured paper-style hero background (hero-paper.dim_1600x900.png)",
   "existing_features": [
     {
-      "id": "feature-rename-all-visible-site-branding-text-from-writer-s-library-to-meri-kitaab-across-the-public-site-layout-including-the-header-brand-title-footer-copyright-line-and-the-logo-image-alt-text",
-      "title": "Rename all visible site branding text from \"Writer's Library\" to \"Meri KITAAB\" across the public site layout, including the header brand title, footer copyright line, and the logo image alt text.",
+      "id": "feature-add-administrator-authentication-using-internet-identity-and-enforce-that-only-the-authenticated-admin-can-create-edit-publish-unpublish-or-delete-categories-and-writing-entries",
+      "title": "Add administrator authentication using Internet Identity and enforce that only the authenticated admin can create, edit, publish/unpublish, or delete categories and writing entries.",
       "reqIds": [
-        "REQ-1"
+        "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-update-html-and-per-page-browser-tab-titles-to-use-meri-kitaab-instead-of-writer-s-library-including-the-base-html-title-and-react-page-level-document-title-updates-on-home-category-and-writing-pages",
-      "title": "Update HTML and per-page browser tab titles to use \"Meri KITAAB\" instead of \"Writer's Library\" (including the base HTML <title> and React page-level document.title updates on Home, Category, and Writing pages).",
+      "id": "feature-build-the-public-reader-experience-homepage-category-section-pages-and-writing-detail-pages-so-visitors-can-browse-categorized-writings-and-read-individual-works",
+      "title": "Build the public reader experience: homepage, category/section pages, and writing detail pages so visitors can browse categorized writings and read individual works.",
       "reqIds": [
-        "REQ-2"
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-an-admin-dashboard-ui-that-allows-the-admin-to-manage-categories-and-writings-add-new-items-edit-existing-items-delete-items-and-publish-unpublish-writings",
+      "title": "Build an admin dashboard UI that allows the admin to manage categories and writings: add new items, edit existing items, delete items, and publish/unpublish writings.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-consistent-data-fetching-and-caching-for-public-and-admin-pages-using-react-query-including-loading-states-error-states-and-optimistic-or-invalidate-on-success-updates-for-admin-mutations",
+      "title": "Implement consistent data fetching and caching for public and admin pages using React Query, including loading states, error states, and optimistic or invalidate-on-success updates for admin mutations.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-coherent-visual-theme-and-layout-across-the-site-suitable-for-a-literary-reading-experience-typography-first-calm-color-palette-strong-readability-and-use-it-consistently-on-public-and-admin-pages",
+      "title": "Apply a coherent visual theme and layout across the site suitable for a literary reading experience (typography-first, calm color palette, strong readability), and use it consistently on public and admin pages.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-basic-seo-friendly-metadata-and-structure-for-public-pages-titles-per-page-readable-urls-for-categories-and-writings-to-improve-discoverability",
+      "title": "Add basic SEO-friendly metadata and structure for public pages (titles per page, readable URLs for categories and writings) to improve discoverability.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-include-simple-site-branding-images-and-render-them-as-static-frontend-assets",
+      "title": "Generate and include simple site branding images and render them as static frontend assets.",
+      "reqIds": [
+        "REQ-8"
       ],
       "version": 1
     }
@@ -26,12 +67,33 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Rename app/project from \"writer's library\" to \"Meri KITAAB\"",
+      "summary": "Public website to display the user's writings for readers",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Categorized sections for different types of writings (e.g., shayari, novels, etc.)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Content management for the user to add and manage writings on the site",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Create backend data models and canister methods to store and manage writing categories (e.g., Shayari, Novels) and writing entries, including create/read/update/delete (CRUD) operations and stable persistence across upgrades.",
+      "reqIds": [
+        "REQ-1"
+      ],
       "status": "pending"
     }
   ],
-  "projectName": "Meri KITAAB",
+  "gameProjectType": "none",
+  "projectName": "Writer's Library",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

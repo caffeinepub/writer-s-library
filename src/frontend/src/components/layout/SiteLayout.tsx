@@ -29,11 +29,11 @@ export default function SiteLayout({ children }: SiteLayoutProps) {
             >
               <img
                 src="/assets/generated/site-logo.dim_512x512.png"
-                alt="Meri KITAAB"
+                alt="Writer's Library"
                 className="h-10 w-10 object-contain"
               />
               <div className="text-left">
-                <h1 className="text-xl font-serif font-semibold tracking-tight">Meri KITAAB</h1>
+                <h1 className="text-xl font-serif font-semibold tracking-tight">Writer's Library</h1>
                 <p className="text-xs text-muted-foreground">A Collection of Words</p>
               </div>
             </button>
@@ -71,12 +71,12 @@ export default function SiteLayout({ children }: SiteLayoutProps) {
           <div className="flex flex-col items-center gap-4 text-center">
             <Separator className="max-w-xs" />
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Meri KITAAB. Built with{' '}
+              © {new Date().getFullYear()} Writer's Library. Built with{' '}
               <Heart className="inline h-3 w-3 text-accent fill-accent" />{' '}
               using{' '}
               <a
                 href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(
-                  typeof window !== 'undefined' ? window.location.hostname : 'meri-kitaab'
+                  typeof window !== 'undefined' ? window.location.hostname : 'writers-library'
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

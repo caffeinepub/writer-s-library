@@ -1,53 +1,314 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Rename public branding to Meri KITAAB",
+  "title": "Writer's Library — Frontend (Public Reader + Admin CMS)",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Replace all visible public-site branding text and logo alt text from \"Writer's Library\" to \"Meri KITAAB\" in the shared layout.",
+      "id": "REQ-2",
+      "summary": "Add Internet Identity sign-in UI and enforce admin-only access to management views in the frontend.",
       "acceptanceCriteria": [
-        "Header brand title displays \"Meri KITAAB\" instead of \"Writer's Library\".",
-        "Footer copyright text displays \"Meri KITAAB\" instead of \"Writer's Library\".",
-        "The header logo image alt text is updated to \"Meri KITAAB\"."
+        "Frontend provides a “Sign in” flow using Internet Identity and displays signed-in principal.",
+        "Unauthenticated or non-admin users cannot access admin pages (guarded routes) and see a clear unauthorized screen."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/layout/SiteLayout.tsx",
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Create a reusable Login/Logout button using the selected authorization component’s Internet Identity guidance (login/clear + React Query cache clear on logout). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useAdminStatus.ts",
+          "operation": "create",
+          "description": "Add React Query hook(s) that use useActor() to fetch admin status (e.g., isCallerAdmin/getCallerUserRole) and expose loading/error states for route guards. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AdminRouteGuard.tsx",
+          "operation": "create",
+          "description": "Create a guard wrapper that blocks admin routes unless signed in and confirmed as admin; show a sign-in prompt when logged out and an access-denied view when logged in but not admin. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AccessDeniedScreen.tsx",
+          "operation": "create",
+          "description": "Create an AccessDeniedScreen for unauthorized attempts, following the selected authorization component’s UI guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Implement application routing and wire admin routes to AdminRouteGuard; ensure public routes remain accessible without signing in."
+        },
+        {
+          "path": "frontend/src/main.tsx",
           "operation": "modify",
-          "description": "Update header brand title text, footer copyright line, and the header logo <img> alt text to use \"Meri KITAAB\" instead of \"Writer's Library\" (no image asset changes)."
+          "description": "Ensure QueryClientProvider + InternetIdentityProvider remain configured; confirm logout clears cached queries (via LoginButton) and admin guard reacts to identity changes."
         }
       ]
     },
     {
-      "id": "REQ-2",
-      "summary": "Update base HTML and React page-level browser tab titles to use \"Meri KITAAB\" instead of \"Writer's Library\" on Home, Category, and Writing pages.",
+      "id": "REQ-3",
+      "summary": "Build public reader pages: home, category listings, and writing detail view with clear navigation.",
       "acceptanceCriteria": [
-        "frontend/index.html <title> is \"Meri KITAAB\".",
-        "Home page sets document.title to \"Meri KITAAB - Home\" (replacing \"Writer's Library - Home\").",
-        "Category page sets document.title to \"<Category Title> - Meri KITAAB\" (replacing \"<Category Title> - Writer's Library\").",
-        "Writing detail page sets document.title to \"<Writing Title> - Meri KITAAB\" (replacing \"<Writing Title> - Writer's Library\")."
+        "Homepage shows an introduction area and a browsable list of categories/sections.",
+        "Category page lists published writings in that category (with title and excerpt/preview).",
+        "Writing detail page shows title, category, date, and full content with readable typography.",
+        "Navigation makes it easy to move between Home, categories, and individual writings.",
+        "All public pages work without signing in."
       ],
       "file_operations": [
         {
-          "path": "frontend/index.html",
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "create",
+          "description": "Create the public homepage with intro/hero area (using generated branding assets) and a browsable categories list; compose UI using shadcn-ui components (e.g., Card, Button, Separator). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/CategoryPage.tsx",
+          "operation": "create",
+          "description": "Create category/section page that loads the category and its published writings (filtered client-side from published list if needed) and displays title + excerpt/preview cards. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/WritingDetailPage.tsx",
+          "operation": "create",
+          "description": "Create writing detail page that loads a single writing and renders title + metadata + full content with readable typography; handle draft/unpublished access by only showing publicly-available items. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/SiteLayout.tsx",
+          "operation": "create",
+          "description": "Create a shared public layout with header navigation (Home, Categories) and footer; include logo asset in header and keep reading-first spacing/line length. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/public/usePublicCategories.ts",
+          "operation": "create",
+          "description": "Add React Query hook to load public categories list for navigation/home (e.g., active root categories). Include loading/error state exposure."
+        },
+        {
+          "path": "frontend/src/hooks/public/usePublishedWritings.ts",
+          "operation": "create",
+          "description": "Add React Query hook to load published writings list for category pages and search/browse UI. Include loading/error state exposure."
+        },
+        {
+          "path": "frontend/src/hooks/public/useWriting.ts",
+          "operation": "create",
+          "description": "Add React Query hook to load a writing detail by id and expose loading/error states for the detail page."
+        },
+        {
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Change the base HTML <title> from \"Writer's Library\" to \"Meri KITAAB\"."
+          "description": "Wire public routes (Home, Category, Writing detail) and ensure navigation links point to them (no orphan pages)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Build an admin dashboard UI to manage categories and writings with publish/unpublish and preview.",
+      "acceptanceCriteria": [
+        "Admin-only pages are not accessible unless signed in as admin (guarded routes).",
+        "Admin can create/edit/delete categories.",
+        "Admin can create/edit/delete writing entries and assign them to a category.",
+        "Admin can toggle published/unpublished status and preview how an entry will look when published.",
+        "Forms provide validation and clear success/error states."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/admin/AdminDashboardPage.tsx",
+          "operation": "create",
+          "description": "Create an admin landing page with navigation to Categories and Writings management; wrap in AdminRouteGuard. Compose UI with shadcn-ui components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminCategoriesPage.tsx",
+          "operation": "create",
+          "description": "Create admin categories list + actions (create/edit/delete). Use shadcn-ui Table/Card/Dialog and form components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminCategoryEditorPage.tsx",
+          "operation": "create",
+          "description": "Create category create/edit form page (or dialog-driven route) with validation and success/error messaging; support setting title/status and other backend-required fields. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminWritingsPage.tsx",
+          "operation": "create",
+          "description": "Create admin writings list with status indicators, actions (edit/delete/publish/unpublish), and quick filters; show mutation feedback and errors. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminWritingEditorPage.tsx",
+          "operation": "create",
+          "description": "Create writing create/edit form with category assignment, content warnings, and a live preview panel that renders similarly to the public WritingDetailPage. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/admin/WritingPreview.tsx",
+          "operation": "create",
+          "description": "Create a reusable preview component to render an entry in the same typography/layout as public reading pages (used in admin editor preview). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/admin/useAdminCategories.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for admin category list/detail and mutations (create/update/delete) with invalidate-on-success patterns."
+        },
+        {
+          "path": "frontend/src/hooks/admin/useAdminWritings.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for admin writing list/detail and mutations (create/update/delete/publish/unpublish/update) with invalidate-on-success patterns."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register admin routes under a dedicated path (e.g., /admin/...) and ensure each admin page is wrapped by AdminRouteGuard to prevent unauthorized access."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Standardize data fetching/caching with React Query across public and admin views, including mutation refresh behavior and friendly errors.",
+      "acceptanceCriteria": [
+        "All list/detail views show appropriate loading and error UI.",
+        "After admin creates/updates/deletes/publishes content, relevant lists and detail pages refresh correctly without requiring a full page reload.",
+        "Network/API errors are displayed in a user-friendly way."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/queryKeys.ts",
+          "operation": "create",
+          "description": "Define centralized React Query keys for categories, writings, and auth/admin state to ensure consistent caching and invalidation."
+        },
+        {
+          "path": "frontend/src/components/state/LoadingState.tsx",
+          "operation": "create",
+          "description": "Add a consistent loading UI component (skeleton/spinner + accessible text) to be reused by all list/detail views; compose with shadcn-ui components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/state/ErrorState.tsx",
+          "operation": "create",
+          "description": "Add a consistent error UI component that maps common backend trap/authorization errors to user-friendly English messages and offers retry when appropriate."
+        },
+        {
+          "path": "frontend/src/hooks/admin/useAdminCategories.ts",
+          "operation": "modify",
+          "description": "Ensure admin mutations invalidate the correct queries (lists + affected detail) and surface success/error states for UI consumption."
+        },
+        {
+          "path": "frontend/src/hooks/admin/useAdminWritings.ts",
+          "operation": "modify",
+          "description": "Ensure publish/unpublish/update/delete mutations invalidate lists and any open detail/preview queries; optionally use optimistic UI where safe (otherwise invalidate-on-success)."
         },
         {
           "path": "frontend/src/pages/HomePage.tsx",
           "operation": "modify",
-          "description": "Update the Home page useEffect document.title assignment to \"Meri KITAAB - Home\"."
+          "description": "Wire LoadingState/ErrorState into the categories load path so the public homepage always shows clear loading/error UI."
         },
         {
           "path": "frontend/src/pages/CategoryPage.tsx",
           "operation": "modify",
-          "description": "Update the Category page useEffect document.title template to \"${category.title} - Meri KITAAB\"."
+          "description": "Wire LoadingState/ErrorState into category + writings loading paths and ensure empty states are handled gracefully."
         },
         {
           "path": "frontend/src/pages/WritingDetailPage.tsx",
           "operation": "modify",
-          "description": "Update the Writing detail page useEffect document.title template to \"${writing.title} - Meri KITAAB\"."
+          "description": "Wire LoadingState/ErrorState into writing detail loading and show a clear not-found/unavailable message if the writing is not accessible."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminCategoriesPage.tsx",
+          "operation": "modify",
+          "description": "Use standardized loading/error and mutation success/error UI patterns; refresh list after mutations via invalidation."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminWritingsPage.tsx",
+          "operation": "modify",
+          "description": "Use standardized loading/error and mutation success/error UI patterns; ensure lists refresh after publish/unpublish/edit/delete without full reload."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply a calm, typography-first visual theme with strong readability across public and admin pages (avoid blue/purple primary palette).",
+      "acceptanceCriteria": [
+        "Site uses a typography-forward layout with comfortable line length, spacing, and contrast for reading.",
+        "Theme (colors, typography, component styling) is consistent across pages.",
+        "Design does not rely on blue/purple as the primary palette."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Add global Tailwind base + typography-first theme tokens and layout defaults (reading width, spacing, neutral/earth-tone palette; avoid blue/purple as primary)."
+        },
+        {
+          "path": "frontend/src/components/layout/SiteLayout.tsx",
+          "operation": "modify",
+          "description": "Apply consistent container sizing (comfortable line length), header/footer spacing, and reusable typography classes for public pages; keep UI composed from existing components (do not modify immutable ui paths)."
+        },
+        {
+          "path": "frontend/src/pages/WritingDetailPage.tsx",
+          "operation": "modify",
+          "description": "Ensure the reading view uses consistent typography (headings, paragraph spacing, line-height, contrast) suitable for long-form reading."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminDashboardPage.tsx",
+          "operation": "modify",
+          "description": "Align admin UI styling with the same theme (colors/typography), ensuring it remains calm and readable while clearly distinct from public reading content."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add SEO-friendly metadata and semantic structure for public pages, with readable URLs for categories and writings.",
+      "acceptanceCriteria": [
+        "Each public page sets a meaningful document title (e.g., category name, writing title).",
+        "Routes use stable, human-readable identifiers (e.g., slugs) or a clear mapping from IDs to URLs.",
+        "Public pages render headings and content with semantic HTML structure."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/slug.ts",
+          "operation": "create",
+          "description": "Implement a small slug utility (e.g., slugify + helpers to parse routes like :id-:slug) to produce readable, stable URLs while preserving canonical ID mapping."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Update route patterns to include readable segments (e.g., /category/:categoryKey and /writing/:writingKey where key encodes id+slug) and ensure navigation uses these URLs."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Set document title for Home and ensure semantic headings (single H1 + structured sections) for the intro and category list."
+        },
+        {
+          "path": "frontend/src/pages/CategoryPage.tsx",
+          "operation": "modify",
+          "description": "Set document title to the category name and ensure semantic structure (H1 category title, H2 list heading, article/list markup for entries)."
+        },
+        {
+          "path": "frontend/src/pages/WritingDetailPage.tsx",
+          "operation": "modify",
+          "description": "Set document title to the writing title; render semantic article structure (H1 title, metadata, content body) for better discoverability and accessibility."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Include generated branding images as static assets and render them in the public UI without harming readability.",
+      "acceptanceCriteria": [
+        "Generated images are saved under frontend/public/assets/generated and referenced directly by the frontend (not served via backend).",
+        "Branding assets appear in the site header/landing area without impacting readability."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/site-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated minimalist calligraphic logo mark as a static asset at frontend/public/assets/generated/site-logo.dim_512x512.png and ensure it is referenced directly by the frontend."
+        },
+        {
+          "path": "frontend/public/assets/generated/hero-paper.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated subtle textured paper-style hero background as a static asset at frontend/public/assets/generated/hero-paper.dim_1600x900.png and ensure it is referenced directly by the frontend."
+        },
+        {
+          "path": "frontend/src/components/layout/SiteLayout.tsx",
+          "operation": "modify",
+          "description": "Wire frontend/public/assets/generated/site-logo.dim_512x512.png into the header branding area and ensure it remains visually subtle and readable."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Wire frontend/public/assets/generated/hero-paper.dim_1600x900.png into the homepage hero/intro background treatment and ensure content contrast/readability remains strong."
         }
       ]
     }

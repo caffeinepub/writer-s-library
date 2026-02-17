@@ -19,7 +19,7 @@ export default function WritingDetailPage() {
 
   useEffect(() => {
     if (writing) {
-      document.title = `${writing.title} - Meri KITAAB`;
+      document.title = `${writing.title} - Writer's Library`;
     }
   }, [writing]);
 

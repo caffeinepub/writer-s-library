@@ -22,7 +22,7 @@ export default function CategoryPage() {
 
   useEffect(() => {
     if (category) {
-      document.title = `${category.title} - Meri KITAAB`;
+      document.title = `${category.title} - Writer's Library`;
     }
   }, [category]);
 

@@ -14,7 +14,7 @@ export default function HomePage() {
   const { data: writings, isLoading: writingsLoading } = usePublishedWritings();
 
   useEffect(() => {
-    document.title = "Meri KITAAB - Home";
+    document.title = "Writer's Library - Home";
   }, []);
 
   if (categoriesLoading) {

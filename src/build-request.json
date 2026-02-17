@@ -1,56 +1,181 @@
 {
   "kind": "build_request",
-  "title": "Rename site from Writer's Library to Meri KITAAB",
-  "projectName": "Meri KITAAB",
+  "title": "Writing Portfolio Website with Categories and Admin Content Management",
+  "projectName": "Writer's Library",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Rename all visible site branding text from \"Writer's Library\" to \"Meri KITAAB\" across the public site layout, including the header brand title, footer copyright line, and the logo image alt text.",
-      "target": "frontend",
+      "text": "Create backend data models and canister methods to store and manage writing categories (e.g., Shayari, Novels) and writing entries, including create/read/update/delete (CRUD) operations and stable persistence across upgrades.",
+      "target": "backend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "change the name from ' writer's library' to ' Meri KITAAB '"
+          "I want a website where people can read my works which would like be in a categoried thing diffrent sections for different things",
+          "and I can handle the website and add things"
         ]
       },
       "acceptanceCriteria": [
-        "Header brand title displays \"Meri KITAAB\" instead of \"Writer's Library\".",
-        "Footer copyright text displays \"Meri KITAAB\" instead of \"Writer's Library\".",
-        "The header logo image alt text is updated to \"Meri KITAAB\"."
+        "Backend supports CRUD for Categories: create, list, update, delete.",
+        "Backend supports CRUD for Writing Entries with fields: id, title, categoryId, type/format (at least plain text/markdown), content/body, excerpt/summary (optional), published flag, createdAt, updatedAt.",
+        "Public read methods only return published entries.",
+        "Data is stored in stable structures so content remains after redeploy/upgrade (add migration.mo only if needed for upgrades later)."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Update HTML and per-page browser tab titles to use \"Meri KITAAB\" instead of \"Writer's Library\" (including the base HTML <title> and React page-level document.title updates on Home, Category, and Writing pages).",
+      "text": "Add administrator authentication using Internet Identity and enforce that only the authenticated admin can create, edit, publish/unpublish, or delete categories and writing entries.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "and I can handle the website and add things"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Frontend provides a “Sign in” flow using Internet Identity and displays signed-in principal.",
+        "Backend restricts all mutating methods (create/update/delete/publish) to the configured admin principal(s).",
+        "Unauthenticated or non-admin users cannot call admin methods (backend rejects with clear error)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Build the public reader experience: homepage, category/section pages, and writing detail pages so visitors can browse categorized writings and read individual works.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "change the name from ' writer's library' to ' Meri KITAAB '"
+          "people can read my works",
+          "categoried thing diffrent sections for different things"
         ]
       },
       "acceptanceCriteria": [
-        "frontend/index.html <title> is \"Meri KITAAB\".",
-        "Home page sets document.title to \"Meri KITAAB - Home\" (replacing \"Writer's Library - Home\").",
-        "Category page sets document.title to \"<Category Title> - Meri KITAAB\" (replacing \"<Category Title> - Writer's Library\").",
-        "Writing detail page sets document.title to \"<Writing Title> - Meri KITAAB\" (replacing \"<Writing Title> - Writer's Library\")."
+        "Homepage shows an introduction area and a browsable list of categories/sections.",
+        "Category page lists published writings in that category (with title and excerpt/preview).",
+        "Writing detail page shows title, category, date, and full content with readable typography.",
+        "Navigation makes it easy to move between Home, categories, and individual writings.",
+        "All public pages work without signing in."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build an admin dashboard UI that allows the admin to manage categories and writings: add new items, edit existing items, delete items, and publish/unpublish writings.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "I can handle the website and add things"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin-only pages are not accessible unless signed in as admin (guarded routes).",
+        "Admin can create/edit/delete categories.",
+        "Admin can create/edit/delete writing entries and assign them to a category.",
+        "Admin can toggle published/unpublished status and preview how an entry will look when published.",
+        "Forms provide validation and clear success/error states."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement consistent data fetching and caching for public and admin pages using React Query, including loading states, error states, and optimistic or invalidate-on-success updates for admin mutations.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "I want a website where people can read my works",
+          "and I can handle the website and add things"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All list/detail views show appropriate loading and error UI.",
+        "After admin creates/updates/deletes/publishes content, relevant lists and detail pages refresh correctly without requiring a full page reload.",
+        "Network/API errors are displayed in a user-friendly way."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Apply a coherent visual theme and layout across the site suitable for a literary reading experience (typography-first, calm color palette, strong readability), and use it consistently on public and admin pages.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Site uses a typography-forward layout with comfortable line length, spacing, and contrast for reading.",
+        "Theme (colors, typography, component styling) is consistent across pages.",
+        "Design does not rely on blue/purple as the primary palette."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add basic SEO-friendly metadata and structure for public pages (titles per page, readable URLs for categories and writings) to improve discoverability.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "I want to create an website for my writings"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each public page sets a meaningful document title (e.g., category name, writing title).",
+        "Routes use stable, human-readable identifiers (e.g., slugs) or a clear mapping from IDs to URLs.",
+        "Public pages render headings and content with semantic HTML structure."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Generate and include simple site branding images and render them as static frontend assets.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are saved under frontend/public/assets/generated and referenced directly by the frontend (not served via backend).",
+        "Branding assets appear in the site header/landing area without impacting readability."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui or any paths listed as immutable in SYSTEM_CONTEXT."
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
+    "Do not modify files under frontend/src/components/ui or other immutable paths; compose UI components instead.",
+    "Use English for all user-facing text."
   ],
   "nonGoals": [
-    "Do not change backend canister logic or stored data.",
-    "Do not regenerate or replace any image assets (logo/background) beyond updating text/alt/title strings."
+    "Reader accounts or profiles beyond admin authentication.",
+    "Comments, likes, or social features.",
+    "Payments, subscriptions, or premium content gates.",
+    "Real-time chat or live updates."
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "Minimalist calligraphic logo mark (site-logo.dim_512x512.png)",
+      "Subtle textured paper-style hero background (hero-paper.dim_1600x900.png)"
+    ],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

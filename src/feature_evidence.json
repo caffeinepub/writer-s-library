@@ -2,10 +2,14 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-rename-all-visible-site-branding-text-from-writer-s-library-to-meri-kitaab-across-the-public-site-layout-including-the-header-brand-title-footer-copyright-line-and-the-logo-image-alt-text",
-      "featureTitle": "Rename all visible site branding text from \"Writer's Library\" to \"Meri KITAAB\" across the public site layout, including the header brand title, footer copyright line, and the logo image alt text.",
+      "featureId": "feature-add-administrator-authentication-using-internet-identity-and-enforce-that-only-the-authenticated-admin-can-create-edit-publish-unpublish-or-delete-categories-and-writing-entries",
+      "featureTitle": "Add administrator authentication using Internet Identity and enforce that only the authenticated admin can create, edit, publish/unpublish, or delete categories and writing entries.",
       "files": [
-        "frontend/src/components/layout/SiteLayout.tsx"
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/AccessDeniedScreen.tsx",
+        "frontend/src/components/auth/AdminRouteGuard.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/main.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -16,15 +20,16 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-1"
+        "REQ-2"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-html-and-per-page-browser-tab-titles-to-use-meri-kitaab-instead-of-writer-s-library-including-the-base-html-title-and-react-page-level-document-title-updates-on-home-category-and-writing-pages",
-      "featureTitle": "Update HTML and per-page browser tab titles to use \"Meri KITAAB\" instead of \"Writer's Library\" (including the base HTML <title> and React page-level document.title updates on Home, Category, and Writing pages).",
+      "featureId": "feature-build-the-public-reader-experience-homepage-category-section-pages-and-writing-detail-pages-so-visitors-can-browse-categorized-writings-and-read-individual-works",
+      "featureTitle": "Build the public reader experience: homepage, category/section pages, and writing detail pages so visitors can browse categorized writings and read individual works.",
       "files": [
-        "frontend/index.html",
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/SiteLayout.tsx",
         "frontend/src/pages/CategoryPage.tsx",
         "frontend/src/pages/HomePage.tsx",
         "frontend/src/pages/WritingDetailPage.tsx"
@@ -38,7 +43,122 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-2"
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-an-admin-dashboard-ui-that-allows-the-admin-to-manage-categories-and-writings-add-new-items-edit-existing-items-delete-items-and-publish-unpublish-writings",
+      "featureTitle": "Build an admin dashboard UI that allows the admin to manage categories and writings: add new items, edit existing items, delete items, and publish/unpublish writings.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/admin/WritingPreview.tsx",
+        "frontend/src/pages/admin/AdminCategoriesPage.tsx",
+        "frontend/src/pages/admin/AdminCategoryEditorPage.tsx",
+        "frontend/src/pages/admin/AdminDashboardPage.tsx",
+        "frontend/src/pages/admin/AdminWritingEditorPage.tsx",
+        "frontend/src/pages/admin/AdminWritingsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-consistent-data-fetching-and-caching-for-public-and-admin-pages-using-react-query-including-loading-states-error-states-and-optimistic-or-invalidate-on-success-updates-for-admin-mutations",
+      "featureTitle": "Implement consistent data fetching and caching for public and admin pages using React Query, including loading states, error states, and optimistic or invalidate-on-success updates for admin mutations.",
+      "files": [
+        "frontend/src/components/state/ErrorState.tsx",
+        "frontend/src/components/state/LoadingState.tsx",
+        "frontend/src/hooks/queryKeys.ts",
+        "frontend/src/pages/CategoryPage.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/pages/WritingDetailPage.tsx",
+        "frontend/src/pages/admin/AdminCategoriesPage.tsx",
+        "frontend/src/pages/admin/AdminWritingsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-coherent-visual-theme-and-layout-across-the-site-suitable-for-a-literary-reading-experience-typography-first-calm-color-palette-strong-readability-and-use-it-consistently-on-public-and-admin-pages",
+      "featureTitle": "Apply a coherent visual theme and layout across the site suitable for a literary reading experience (typography-first, calm color palette, strong readability), and use it consistently on public and admin pages.",
+      "files": [
+        "frontend/src/components/layout/SiteLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/WritingDetailPage.tsx",
+        "frontend/src/pages/admin/AdminDashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-basic-seo-friendly-metadata-and-structure-for-public-pages-titles-per-page-readable-urls-for-categories-and-writings-to-improve-discoverability",
+      "featureTitle": "Add basic SEO-friendly metadata and structure for public pages (titles per page, readable URLs for categories and writings) to improve discoverability.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/CategoryPage.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/pages/WritingDetailPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-generate-and-include-simple-site-branding-images-and-render-them-as-static-frontend-assets",
+      "featureTitle": "Generate and include simple site branding images and render them as static frontend assets.",
+      "files": [
+        "frontend/src/components/layout/SiteLayout.tsx",
+        "frontend/src/pages/HomePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
       ],
       "confidence": "high"
     }

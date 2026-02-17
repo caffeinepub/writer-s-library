@@ -1,33 +1,140 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-17T10:58:24.339Z",
-  "summary": "All requested branding and title updates to rename \"Writer's Library\" to \"Meri KITAAB\" appear to be implemented across the public layout (header/footer/logo alt) and page/browser titles (base HTML title plus Home/Category/Writing document.title).",
-  "missing_requirements": [],
-  "hallucinated_features": [
+  "generatedAt": "2026-02-17T10:26:53.161Z",
+  "summary": "The diff adds a Motoko backend actor plus a React/TanStack Router + React Query frontend with admin pages and Internet Identity login plumbing. However, several core BuildRequest requirements are only partially implemented or appear mismatched (notably the backend writing/category data model, stable persistence, public-vs-admin read separation, SEO-friendly readable URLs, and required hero branding asset usage). The diff also introduces unrequested user-profile and generalized access-control functionality.",
+  "missing_requirements": [
     {
-      "description": "Updated/maintained internal project tracking metadata (project_state.json) including projectName and new_feature_requests entries.",
-      "reason": "BuildRequest only asked for frontend branding/title text changes; it did not request changes to project tracking/metadata files.",
+      "id": "REQ-1",
+      "requirement": "Writing Entries CRUD with required fields (id, title, categoryId, type/format, content/body, excerpt optional, published flag, createdAt, updatedAt).",
+      "reason": "The backend Writing model shown does not include the required fields (categoryId singular, type/format, excerpt, published flag, createdAt/updatedAt). It instead uses fields like state, categories array, submissions, contentWarnings, parentPageId.",
       "evidence": [
-        "project_state.json"
+        "backend/main.mo"
       ]
     },
     {
-      "description": "Updated generated documentation/summary file listing frontend files and descriptions.",
-      "reason": "BuildRequest did not request documentation or summary file updates, only branding/title text changes in the app UI and HTML titles.",
+      "id": "REQ-1",
+      "requirement": "Stable persistence across upgrades (stable structures + upgrade hooks).",
+      "reason": "The shown storage uses in-memory `Map.empty` and `var nextCategoryId/nextWritingId` without evidence of `stable` variables or `preupgrade/postupgrade` persistence logic in the truncated content.",
       "evidence": [
-        "frontend-file-summaries.txt"
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-1",
+      "requirement": "Public read methods only return published entries.",
+      "reason": "Frontend admin query `useAdminWritings` calls `actor.getPublishedWritings()` and even comments \"Get all writings (admin can see drafts)\" while still calling published-only; no evidence of separate admin read method that returns unpublished content, nor of strict public filtering being enforced by dedicated public methods beyond naming.",
+      "evidence": [
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Backend restricts all mutating methods to configured admin principal(s) (Internet Identity principal-based).",
+      "reason": "Frontend initializes access control via a secret URL parameter (`caffeineAdminToken`) calling `_initializeAccessControlWithSecret`, which is not the requested mechanism of configured admin principals; backend shows permission checks but does not show configured admin principals list in the provided excerpt.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Public reader experience pages (homepage intro + browsable categories, category page lists published writings with excerpt/preview, writing detail shows title/category/date/full content).",
+      "reason": "Routes are wired to HomePage/CategoryPage/WritingDetailPage, but the diff summary does not include these page implementations, so the required UI/behavior (intro area, excerpts, date/category rendering, typography) cannot be verified from the provided evidence.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Admin can create/edit/delete writing entries, assign to a category, and publish/unpublish; forms include validation plus clear success/error states; preview entry as published.",
+      "reason": "Admin category management is present, and a `WritingPreview` component exists, but the diff summary does not show AdminWritingsPage/AdminWritingEditorPage implementations or publish/unpublish toggling and category assignment for writings.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/admin/WritingPreview.tsx"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "SEO-friendly metadata (meaningful document titles per page) and readable URLs for categories and writings (slugs or mapping from IDs).",
+      "reason": "Routes use numeric IDs directly (`/category/$categoryId`, `/writing/$writingId`) and there is no evidence of document-title setting (e.g., via a head manager) in the shown files.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "Generate and include branding images under `frontend/public/assets/generated` including hero background `hero-paper.dim_1600x900.png`, and render them in the UI.",
+      "reason": "The header references the logo path, but the diff summary does not show the actual image assets being added (they may be among omitted files), and there is no evidence of the hero paper background being referenced/rendered.",
+      "evidence": [
+        "frontend/src/components/layout/SiteLayout.tsx"
       ]
     }
   ],
-  "confidence": 0.86,
+  "hallucinated_features": [
+    {
+      "description": "User profile model and profile CRUD (save/view caller profile) with user permissions.",
+      "reason": "BuildRequest explicitly lists reader accounts/profiles as a non-goal beyond admin authentication, yet the backend exposes `UserProfile` and profile methods and enforces a `#user` permission role.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/components/auth/ProfileSetupModal.tsx"
+      ]
+    },
+    {
+      "description": "Generalized access control initialization via a secret URL parameter (`caffeineAdminToken`) and `_initializeAccessControlWithSecret` call.",
+      "reason": "Not requested; requirements specify Internet Identity admin principal enforcement, not secret-token bootstrapping via URL parameters.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts"
+      ]
+    },
+    {
+      "description": "Expanded category and writing data structures (hierarchical categories, focusBannerUrl, supportedLanguages, writing submissions/contentWarnings, writing state machine with pending/rejected).",
+      "reason": "BuildRequest only asked for basic categories and writing entries with specific fields; additional moderation-like workflow/state and extra metadata are unrequested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Footer attribution link to caffeine.ai with UTM parameters.",
+      "reason": "Not mentioned in the BuildRequest; adds external attribution/marketing link.",
+      "evidence": [
+        "frontend/src/components/layout/SiteLayout.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.72,
   "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
     "frontend-file-summaries.txt",
+    "frontend/index.css",
     "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/admin/WritingPreview.tsx",
+    "frontend/src/components/auth/AccessDeniedScreen.tsx",
+    "frontend/src/components/auth/AdminRouteGuard.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/auth/ProfileSetupModal.tsx",
+    "frontend/src/components/layout/AdminLayout.tsx",
     "frontend/src/components/layout/SiteLayout.tsx",
+    "frontend/src/components/state/ErrorState.tsx",
+    "frontend/src/components/state/LoadingState.tsx",
+    "frontend/src/hooks/queryKeys.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
     "frontend/src/pages/CategoryPage.tsx",
     "frontend/src/pages/HomePage.tsx",
     "frontend/src/pages/WritingDetailPage.tsx",
+    "frontend/src/pages/admin/AdminCategoriesPage.tsx",
+    "frontend/src/pages/admin/AdminCategoryEditorPage.tsx",
+    "frontend/src/pages/admin/AdminDashboardPage.tsx",
+    "frontend/src/pages/admin/AdminWritingEditorPage.tsx",
+    "frontend/src/pages/admin/AdminWritingsPage.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
     "project_state.json"
   ]
 }
